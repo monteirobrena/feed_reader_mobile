@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Reflexões Brenianas - Feed</title>
+		<link rel="stylesheet" href="javascripts/jquery.mobile-1.0rc1/jquery.mobile-1.0rc1.min.css" />
+		<script src="javascripts/jquery-1.6.4.min.js"></script>
+		<script src="javascripts/jquery.mobile-1.0rc1/jquery.mobile-1.0rc1.min.js"></script>
+		<script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAAyJyU2pP8HEAQFu-dU3akzBR7d_GtPeo448_JGrfvnaGEhmVSWRTZdP9sQjlaQOQLsACfWtQEy9jF4A"></script>
+	</head>
+	<body>
+		<!-- begin home -->
+		<section id="home" data-role="page">
+			<header data-role="header" data-position="fixed">
+				<center>
+					<h1>Reflexões Brenianas - Feed</h1>
+				</center>
+			</header>
+			<div id="feed"></div>
+
+			<div class="content" data-role="content" >
+				<ul data-role="listview">
+				</ul>
+			</div>
+			<footer data-role="footer" data-position="fixed">
+				<center>
+					<h3>monteirobrena</h3>
+				</center>
+			</footer>
+		</section>
+		<!-- end home -->
+		<script type="text/javascript">
+		
+			google.load("feeds", "1");
+
+			function initialize() {
+				// Get feed.
+				var feed = new google.feeds.Feed("http://monteirobrena.wordpress.com/feed");
+				// Set the number of entries to get.
+				feed.setNumEntries(10);
+				
+				// Load the feed.
+				feed.load(function(result) {
+				
+					// Verify error.
+					if (result.error) {
+					
+					  // Remove the olders posts.
+						$page.find(".content").empty();
+						alert("Nenhum post encontrado.");
+						
+					}else{
+						// Get the content of page.
+						var $page = $("#home");
+					
+						// Delete the existing posts, if any
+						$page.find(".content").empty();
+				
+						// Create a new list of posts
+						$page.find(".content").html("<ul></ul>");
+						
+						// Get list of posts.
+						$list = $page.find(".content ul");
+						
+						// Get the content of feed.	
+						var container = document.getElementById("feed");
+						
+						// Through the list of posts.
+						for (var i = 0; i < result.feed.entries.length; i++) {
+							 		
+					 		// Get entry of feed.
+					 		var entry = result.feed.entries[i];
+					 		
+					 		// Get title of post.
+		         		var title = entry.title;
+					 
+							// Build HTML that contains the desired information.
+							var strHtml = '<li><a href="#home">';
+							strHtml += title;
+							strHtml += '</a></li>\n';
+							
+							// Make it into a jQuery object.
+							var post = $(strHtml);
+							
+							// Append it to our list.
+							$list.append(post);
+						}
+						// Set list in listview.
+						$list.listview();
+					}
+				});
+			}
+			google.setOnLoadCallback(initialize);
+		</script>
+	</body>
+</html>
+
