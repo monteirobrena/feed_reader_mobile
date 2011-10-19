@@ -16,8 +16,6 @@
 					<h1>Reflexões Brenianas - Feed</h1>
 				</center>
 			</header>
-			<div id="feed"></div>
-
 			<div class="content" data-role="content" >
 				<ul data-role="listview">
 				</ul>
@@ -53,10 +51,10 @@
 						// Get the content of page.
 						var $page = $("#home");
 					
-						// Delete the existing posts, if any
+						// Delete the existing posts, if any.
 						$page.find(".content").empty();
 				
-						// Create a new list of posts
+						// Create a new list of posts.
 						$page.find(".content").html("<ul></ul>");
 						
 						// Get list of posts.
@@ -66,27 +64,44 @@
 						var container = document.getElementById("feed");
 						
 						// Through the list of posts.
-						for (var i = 0; i < result.feed.entries.length; i++) {
+						for (var count = 0; count < result.feed.entries.length; count++) {
 							 		
 					 		// Get entry of feed.
-					 		var entry = result.feed.entries[i];
+					 		var entry = result.feed.entries[count];
 					 		
 					 		// Get title of post.
 		         		var title = entry.title;
-					 
+		         		
+		         		// Get link of post.
+		         		var link = entry.link;
+		         		
 							// Build HTML that contains the desired information.
-							var strHtml = '<li><a href="#home">';
-							strHtml += title;
-							strHtml += '</a></li>\n';
+							var strLink = '<li><a href="#post' + count + '">';
+							strLink += title;
+							strLink += '</a></li>\n';
 							
 							// Make it into a jQuery object.
-							var post = $(strHtml);
+							var item = $(strLink);
 							
 							// Append it to our list.
-							$list.append(post);
+							$list.append(item);
+							
+							// Get post.
+		         		var post = entry.content;
+		         		
+		         		var strPost = '<section id="post' + count + '" data-role="page">';
+							strPost += '<header data-role="header" data-position="fixed">';
+							strPost += '<center><h1>Reflexões Brenianas - Feed</h1></center></header>';
+							strPost += '<div class="contentPost" data-role="content">';
+							strPost += post;
+							strPost += '</div><footer data-role="footer" data-position="fixed">';
+							strPost += '<center><h3>monteirobrena</h3></center></footer></section>';
+							$page.innerHTML = strPost; 
 						}
 						// Set list in listview.
 						$list.listview();
+						$('#home').page();
+
 					}
 				});
 			}
