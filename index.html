@@ -30,7 +30,7 @@
 		<script type="text/javascript">
 
 			google.load("feeds", "1");
-
+        
 			function initialize() {
          
 				// Get feed.
@@ -42,7 +42,7 @@
 				// Load the feed.
 				feed.load(function(result) {
 				
-               // Get the content of page.
+               		// Get the content of page.
 					var $page = $("#home");
 					
 					// Delete the existing posts, if any.
@@ -53,7 +53,7 @@
 						alert("Nenhum post encontrado.");
 					}else{
 
-                  // Create a new list of posts.
+                  		// Create a new list of posts.
 						$page.find(".content").html("<ul></ul>");
 						
 						// Get list of posts.
@@ -69,10 +69,10 @@
 					 		var entry = result.feed.entries[count];
 					 		
 					 		// Get title of post.
-		         		var title = entry.title;
+		         			var title = entry.title;
 		         		
-		         		// Get link of post.
-		         		var link = entry.link;
+		         			// Get link of post.
+		         			var link = entry.link;
 		         		
 							// Build HTML that contains the desired information.
 							var strLink = '<li><a href="javascript:create_page(' + count + ');">';
@@ -84,28 +84,27 @@
 							
 							// Append it to our list.
 							$list.append(item);
-							
-							
 						}
 						// Set list in listview.
 						$list.listview();
 					}
 				});
 			}
+			
 			google.setOnLoadCallback(initialize);
-
-         function create_page(page_id) {
          
-            // Get feed.
+         	function create_page(page_id) {
+         
+            	// Get feed.
 				var feed = new google.feeds.Feed("http://monteirobrena.wordpress.com/feed");
             
-            // Set the number of entries to get.
+            	// Set the number of entries to get.
 				feed.setNumEntries(10);
 				
 				// Load the feed.
 				feed.load(function(result) {
             
-               // Get the content of page.
+               		// Get the content of page.
 					var $page = $("#home");
 					
 					// Delete the existing posts, if any.
@@ -116,31 +115,36 @@
 						alert("Nenhum post encontrado.");
 					}else{
                   
-                  // Get entry of feed.
-                  var entry = result.feed.entries[page_id];
+                  		// Get entry of feed.
+                  		var entry = result.feed.entries[page_id];
                   
-                  // Get post.
-                  var post = entry.content;
+                  		// Get title.
+                  		var title = entry.title;
                   
-                  var strPost = '<section id="' + page_id + '" data-role="page">';
-                  strPost += '<header data-role="header" data-position="fixed">';
-                  strPost += '<center><h1>Reflexões Brenianas - Feed</h1></center></header>';
-                  strPost += '<div class="contentPost" data-role="content">';
-                  strPost += post;
-
-                  strPost += '</div><footer data-role="footer" data-position="fixed">';
-                  strPost += '<center><h3>monteirobrena</h3></center></footer></section>';
+                  		// Get post.
+                  		var post = entry.content;
                   
-                  $('#page_body').append(strPost);
+						var strPost = '<section id="page_' + page_id + '" data-role="page">';
+						strPost += '<header data-role="header" data-position="fixed">';
+						strPost += '<a href="#home" data-icon="back" onclick="initialize();">Voltar</a>';
+						strPost += '<center><h1>Reflexões Brenianas - Feed</h1></center></header>';
+						strPost += '<div class="contentPost" data-role="content">';
+						strPost += '<h3>' + title + '</h3>'
+						strPost += post + '</div>';
+						strPost += '<footer data-role="footer" data-position="fixed">';
+						strPost += '<center><h3>monteirobrena</h3></center></footer></section>';
+						
+						$('#page_body').append(strPost);
+						
+						// initialize the new page 
+						$.mobile.initializePage();
 
-                  // initialize the new page 
-                  $.mobile.initializePage();
-
-                  // navigate to the new page
-                  $.mobile.changePage("#" + page_id, "pop", false, true);
-               }
-            });
-         }
+                  		// navigate to the new page
+                  		$.mobile.changePage("#page_" + page_id, "slide", true, false);
+               		}
+            	});
+         	}
 		</script>
 	</body>
 </html>
+
